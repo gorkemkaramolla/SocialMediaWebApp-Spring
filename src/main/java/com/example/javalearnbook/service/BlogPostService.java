@@ -41,4 +41,15 @@ public class BlogPostService {
         return false;
 
     }
+    public boolean deleteUser(Long id )
+    {
+        if(blogPostRepository.findById(id).isPresent())
+        {
+            blogPostRepository.deleteById(id);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

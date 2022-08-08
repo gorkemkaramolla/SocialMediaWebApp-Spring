@@ -59,6 +59,12 @@ public class BlogPostController {
 
 
     }
+    @DeleteMapping("/{userId}")
+    public String deleteUser(@PathVariable Long userId)
+    {
+        return blogPostService.deleteUser(userId)?"deleted":"cant delete";
+    }
+
 
 
     @Bean
