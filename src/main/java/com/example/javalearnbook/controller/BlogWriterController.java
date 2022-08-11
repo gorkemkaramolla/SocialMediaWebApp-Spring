@@ -1,7 +1,7 @@
 package com.example.javalearnbook.controller;
-import com.example.javalearnbook.dto.BlogPostDto;
+
 import com.example.javalearnbook.dto.BlogWriterDto;
-import com.example.javalearnbook.model.BlogPost;
+
 import com.example.javalearnbook.model.BlogWriter;
 import com.example.javalearnbook.service.BlogWriterService;
 import lombok.AllArgsConstructor;
@@ -21,30 +21,32 @@ public class BlogWriterController {
     private BlogWriterService blogWriterService;
 
     @GetMapping
-    @ResponseBody
+
     public List<BlogWriterDto> findAllWriters()
     {
         List<BlogWriter> writersList = blogWriterService.findAllWriters();
         return convertListToDto(writersList);
 
     }
+    @GetMapping("/{userId}")
+    public BlogWriterDto getOneWriter(@PathVariable Long userId)
+    {
+        BlogWriter singleWriter= blogWriterService.getOneWriter(userId);
+        return convertToDto(singleWriter);
+    }
     @PostMapping
     public BlogWriter saveWriter(@RequestBody BlogWriterDto blogWriterDto)
     {
-
         return blogWriterService.saveWriter(convertToEntity(blogWriterDto));
     }
-    @PutMapping("{userId}")
-    public BlogWriterDto updateUser(@RequestParam Long userId,@RequestBody BlogWriterDto blogWriterDto)
+    @PutMapping("/{userId}")
+    public BlogWriterDto updateUser(@PathVariable Long userId,@RequestBody BlogWriterDto blogWriterDto)
     {
         BlogWriter updatingWriter = convertToEntity(blogWriterDto);
         BlogWriter updatedWriter= blogWriterService.updateWriter(userId,updatingWriter);
+
         return convertToDto(updatedWriter);
     }
-
-
-
-
 
     @Bean
     public ModelMapper modelMapper() {
@@ -64,8 +66,7 @@ public class BlogWriterController {
 
     private  List<BlogWriterDto> convertListToDto(List<BlogWriter> writerList)
     {
-        List<BlogWriterDto> listDto=writerList.stream().map((writer) -> modelMapper.map(writer,BlogWriterDto.class)).toList();
-        return listDto;
+        return writerList.stream().map((writer) -> modelMapper.map(writer,BlogWriterDto.class)).toList();
     }
 
 

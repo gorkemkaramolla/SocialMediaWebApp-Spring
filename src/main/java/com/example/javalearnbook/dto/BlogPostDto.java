@@ -5,9 +5,6 @@ import lombok.Data;
 public class BlogPostDto {
     private String content;
     private String title;
-
-
-
-
+    private Long writerId;
 }
 
