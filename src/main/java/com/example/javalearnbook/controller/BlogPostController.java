@@ -7,6 +7,7 @@ import com.example.javalearnbook.service.BlogPostService;
 import com.example.javalearnbook.service.BlogWriterService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.boot.Banner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.ui.ModelMap;
@@ -36,14 +37,40 @@ public class BlogPostController {
     @PostMapping
     private BlogPostDto createPost(@RequestBody BlogPostDto blogPostDto)
     {
-        BlogWriter writer = blogWriterService.getOneWriter(blogPostDto.getWriterId());
-        if(writer != null)
-        {
-            BlogPost blogPost = convertToEntity(blogPostDto);
-            return convertToDto(blogPostService.createPost(blogPost));
-        }
-        return null;
+        BlogPost blogPost = convertToEntity(blogPostDto);
+        BlogPost responsePost = blogPostService.createPost(blogPostDto.getWriterId(),blogPost);
+        return convertToDto(responsePost);
+
     }
+    @PutMapping("{postId}")
+    public BlogPostDto changePostInfo(@PathVariable Long postId,@RequestBody BlogPostDto blogPostDto)
+    {
+        BlogPost changedPost= convertToEntity(blogPostDto);
+        return convertToDto(blogPostService.changePostInfo(postId,changedPost));
+    }
+    @DeleteMapping("{postId}")
+    public String deletePost(@PathVariable Long postId)
+    {
+        return blogPostService.deletePost(postId);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Bean
     public ModelMapper modelMapper1()
@@ -51,6 +78,19 @@ public class BlogPostController {
         return new ModelMapper();
     }
     private final ModelMapper modelMapper = modelMapper1();
+    /*private BlogPostDto convertDtoskipField(BlogPost blogPost)
+    {
+        modelMapper.addMappings(new PropertyMap<BlogPost, BlogPostDto>() {
+            @Override
+            protected void configure()
+            {
+                skip(destination.getWriterId());
+            }
+
+        });
+        return modelMapper.map(blogPost, BlogPostDto.class);
+
+    }*/
 
     private BlogPostDto convertToDto(BlogPost blogPost)
     {

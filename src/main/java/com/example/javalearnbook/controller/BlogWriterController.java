@@ -39,14 +39,25 @@ public class BlogWriterController {
     {
         return blogWriterService.saveWriter(convertToEntity(blogWriterDto));
     }
-    @PutMapping("/{userId}")
-    public BlogWriterDto updateUser(@PathVariable Long userId,@RequestBody BlogWriterDto blogWriterDto)
+    @PutMapping("/{writerId}")
+    public BlogWriterDto updateUser(@PathVariable Long writerId,@RequestBody BlogWriterDto blogWriterDto)
     {
         BlogWriter updatingWriter = convertToEntity(blogWriterDto);
-        BlogWriter updatedWriter= blogWriterService.updateWriter(userId,updatingWriter);
+        BlogWriter updatedWriter= blogWriterService.updateWriter(writerId,updatingWriter);
 
         return convertToDto(updatedWriter);
     }
+    @DeleteMapping("{writerId}")
+    public String deleteWriter(@PathVariable Long writerId)
+    {
+        return blogWriterService.deleteWriter(writerId);
+    }
+
+
+
+
+
+
 
     @Bean
     public ModelMapper modelMapper() {

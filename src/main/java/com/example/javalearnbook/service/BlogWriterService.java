@@ -45,6 +45,17 @@ public class BlogWriterService {
     }
 
 
+    public String deleteWriter(Long writerId) {
+        Optional<BlogWriter> requestedWriter = blogWriterRepository.findById(writerId);
+        if(requestedWriter.isPresent())
+        {
+            blogWriterRepository.deleteById(writerId);
+            return "Deleted";
+        }
+        else {
+            return "Can't delete";
+        }
+    }
 }
 
 

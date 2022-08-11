@@ -1,6 +1,7 @@
 package com.example.javalearnbook.model;
 
 import lombok.Data;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,8 +22,7 @@ public class BlogWriter {
     @Column(unique = true)
     private String email;
     private String password;
-
-    @OneToMany(mappedBy = "writer",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "writer")
     private Set<BlogPost> posts = new HashSet<>();
 
 
