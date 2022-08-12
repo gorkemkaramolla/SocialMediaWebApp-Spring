@@ -25,5 +25,7 @@ public class BlogWriter {
     @OneToMany(mappedBy = "writer")
     private Set<BlogPost> posts = new HashSet<>();
 
+    @OneToMany(mappedBy = "writer")
+    private Set<BlogPostComment> comments = new HashSet<>();
 
 }
