@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-
 @RestController
 @RequestMapping("/writers")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -52,11 +50,6 @@ public class WriterController {
     {
         return writerService.deleteWriter(writerId);
     }
-
-
-
-
-
 
 
     @Bean

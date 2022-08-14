@@ -11,21 +11,21 @@ import java.util.Optional;
 @Service
 public class PostService {
 
-    private final PostRepository repository;
+    private final PostRepository postRepository;
     private final WriterService writerService;
 
     public List<Post> getWritersPosts(Optional<Long> writerId)
     {
         if(writerId.isPresent())
         {
-            return repository.findByWriterId(writerId.get());
+            return postRepository.findByWriterId(writerId.get());
         }
-        return repository.findAll();
+        return postRepository.findAll();
     }
 
 
     public Post getPostById(Long postId) {
-        return repository.findById(postId).orElse(null);
+        return postRepository.findById(postId).orElse(null);
     }
 
     public Post createPost(Long writerId, Post post) {
@@ -37,31 +37,31 @@ public class PostService {
             toSave.setContent(post.getContent());
             toSave.setTitle(post.getTitle());
             toSave.setWriter(writer);
-            return repository.save(toSave);
+            return postRepository.save(toSave);
        }
         return null;
     }
 
     public Post changePostInfo(Long postId, Post changedPost) {
 
-        Post post = repository.findById(postId).orElse(null);
+        Post post = postRepository.findById(postId).orElse(null);
         if(post!=null)
         {
 
             post.setTitle(changedPost.getTitle());
             post.setContent(changedPost.getContent());
 
-            return repository.save(post);
+            return postRepository.save(post);
 
         }
         return null;
     }
 
     public String deletePost(Long postId) {
-        Optional<Post> post = repository.findById(postId);
+        Optional<Post> post = postRepository.findById(postId);
         if(post.isPresent())
         {
-            repository.deleteById(postId);
+            postRepository.deleteById(postId);
             return "Deleted";
         }
         return "Can't delete";
@@ -69,7 +69,7 @@ public class PostService {
 
 
     public PostService(PostRepository repository, WriterService writerService) {
-        this.repository = repository;
+        this.postRepository = repository;
         this.writerService = writerService;
     }
 }

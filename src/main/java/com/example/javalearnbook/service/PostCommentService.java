@@ -20,7 +20,7 @@ public class PostCommentService {
         this.postService = postService;
     }
 
-    private CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
     private final WriterService writerService;
     private final PostService postService;
     public List<PostComment> getComments(Optional<Long> writerId, Optional<Long> postId) {
@@ -31,11 +31,11 @@ public class PostCommentService {
         }
         else if(postId.isPresent())
         {
-            return postId.map(id -> commentRepository.findByPostId(id)).orElse(null).stream().toList();
+            return postId.map(commentRepository::findByPostId).orElse(null).stream().toList();
 
         }
         else if(writerId.isPresent()){
-            return writerId.map(id -> commentRepository.findByWriterId(id)).orElse(null).stream().toList();
+            return writerId.map(commentRepository::findByWriterId).orElse(null).stream().toList();
 
         }
         return null;
