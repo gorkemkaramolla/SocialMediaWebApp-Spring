@@ -14,7 +14,7 @@ import java.util.Set;
 @Table()
 @Data
 
-public class BlogPost {
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,11 +26,11 @@ public class BlogPost {
     @JoinColumn(name= "writer_id",nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private BlogWriter writer;
+    private Writer writer;
 
 
     @OneToMany(mappedBy = "post")
-    Set<BlogPostComment> list = new HashSet<>();
+    Set<PostComment> list = new HashSet<>();
 
 
 }

@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table()
 @Data
-public class BlogWriter {
+public class Writer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,9 +23,9 @@ public class BlogWriter {
     private String email;
     private String password;
     @OneToMany(mappedBy = "writer")
-    private Set<BlogPost> posts = new HashSet<>();
+    private Set<Post> posts = new HashSet<>();
 
     @OneToMany(mappedBy = "writer")
-    private Set<BlogPostComment> comments = new HashSet<>();
+    private Set<PostComment> comments = new HashSet<>();
 
 }

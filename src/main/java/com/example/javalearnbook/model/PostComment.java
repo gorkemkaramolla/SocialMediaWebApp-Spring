@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table()
 @Data()
 
-public class BlogPostComment {
+public class PostComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,11 +21,11 @@ public class BlogPostComment {
     @JoinColumn(name = "post_id",nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private BlogPost post;
+    private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private BlogWriter writer;
+    private Writer writer;
 
 }

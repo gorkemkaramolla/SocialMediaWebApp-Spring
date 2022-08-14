@@ -1,0 +1,65 @@
+package com.example.javalearnbook.service;
+
+import com.example.javalearnbook.dto.requests.CommentsRequests;
+import com.example.javalearnbook.model.Post;
+import com.example.javalearnbook.model.PostComment;
+import com.example.javalearnbook.model.Writer;
+import com.example.javalearnbook.repository.CommentRepository;
+
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+@Service
+
+public class PostCommentService {
+    public PostCommentService(CommentRepository commentRepository, WriterService writerService,
+                              PostService postService) {
+        this.commentRepository = commentRepository;
+        this.writerService = writerService;
+        this.postService = postService;
+    }
+
+    private CommentRepository commentRepository;
+    private final WriterService writerService;
+    private final PostService postService;
+    public List<PostComment> getComments(Optional<Long> writerId, Optional<Long> postId) {
+        //post first writer second
+        if(postId.isPresent() && writerId.isPresent())
+        {
+            return commentRepository.findByWriterIdAndPostId(postId.get(),writerId.get());
+        }
+        else if(postId.isPresent())
+        {
+            return postId.map(id -> commentRepository.findByPostId(id)).orElse(null).stream().toList();
+
+        }
+        else if(writerId.isPresent()){
+            return writerId.map(id -> commentRepository.findByWriterId(id)).orElse(null).stream().toList();
+
+        }
+        return null;
+
+    }
+
+    public PostComment createComment(CommentsRequests requestDto) {
+        Post post = postService.getPostById(requestDto.getPostId());
+        Writer writer = writerService.getWriterById(requestDto.getWriterId());
+        if(post != null && writer != null)
+        {
+
+            PostComment commentToSave = new PostComment();
+            commentToSave.setComment(requestDto.getComment());
+            commentToSave.setPost(post);
+            commentToSave.setWriter(writer);
+            return commentRepository.save(commentToSave);
+
+
+        }
+        return null;
+    }
+
+    public PostComment getCommentById(Long commentId) {
+        return commentRepository.findById(commentId).orElse(null);
+    }
+}
