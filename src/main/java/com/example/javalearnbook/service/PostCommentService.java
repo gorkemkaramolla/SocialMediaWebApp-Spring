@@ -27,7 +27,7 @@ public class PostCommentService {
         //post first writer second
         if(postId.isPresent() && writerId.isPresent())
         {
-            return commentRepository.findByWriterIdAndPostId(postId.get(),writerId.get());
+            return commentRepository.findByWriterIdAndPostId(writerId.get(),postId.get());
         }
         else if(postId.isPresent())
         {
@@ -38,7 +38,10 @@ public class PostCommentService {
             return writerId.map(commentRepository::findByWriterId).orElse(null).stream().toList();
 
         }
-        return null;
+        else {
+            return commentRepository.findAll();
+        }
+
 
     }
 
@@ -49,14 +52,14 @@ public class PostCommentService {
         {
 
             PostComment commentToSave = new PostComment();
+            commentToSave.setId(requestDto.getId());
             commentToSave.setComment(requestDto.getComment());
             commentToSave.setPost(post);
             commentToSave.setWriter(writer);
             return commentRepository.save(commentToSave);
-
-
         }
-        return null;
+        else
+            return null;
     }
 
     public PostComment getCommentById(Long commentId) {

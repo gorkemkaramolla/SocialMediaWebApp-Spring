@@ -1,8 +1,8 @@
 package com.example.javalearnbook.model;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -12,8 +12,9 @@ import java.util.Set;
 
 @Entity
 @Table()
-@Data
-
+@Getter
+@Setter
+@NoArgsConstructor
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +30,9 @@ public class Post {
     private Writer writer;
 
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post",fetch = FetchType.EAGER)
     Set<PostComment> list = new HashSet<>();
+
 
 
 }

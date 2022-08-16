@@ -1,6 +1,8 @@
 package com.example.javalearnbook.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 import javax.persistence.*;
@@ -11,7 +13,10 @@ import java.util.Set;
 
 @Entity
 @Table()
-@Data
+@NoArgsConstructor
+@Getter
+@Setter
+
 public class Writer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +32,11 @@ public class Writer {
 
     @OneToMany(mappedBy = "writer")
     private Set<PostComment> comments = new HashSet<>();
+
+
+
+
+
+
 
 }

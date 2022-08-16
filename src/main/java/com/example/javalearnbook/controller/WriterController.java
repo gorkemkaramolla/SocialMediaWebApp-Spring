@@ -4,7 +4,6 @@ import com.example.javalearnbook.dto.WriterDto;
 
 import com.example.javalearnbook.model.Writer;
 import com.example.javalearnbook.service.WriterService;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/writers")
 @CrossOrigin(origins = "http://localhost:3000")
-@AllArgsConstructor
+
 public class WriterController {
 
     private WriterService writerService;
@@ -73,32 +72,7 @@ public class WriterController {
         return writerList.stream().map((writer) -> modelMapper.map(writer,WriterDto.class)).toList();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public WriterController(WriterService writerService) {
+        this.writerService = writerService;
+    }
 }

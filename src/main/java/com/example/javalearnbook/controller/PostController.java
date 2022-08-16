@@ -16,12 +16,15 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/posts")
 public class PostController {
 
-    private PostService postService;
-    private final WriterService writerService;
+    private final PostService postService;
+
+    public PostController(PostService postService, WriterService writerService) {
+        this.postService = postService;
+    }
+
     @GetMapping
     private List<PostDto> getAllPosts(@RequestParam Optional<Long> writerId)
     {

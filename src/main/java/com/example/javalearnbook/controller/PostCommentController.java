@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/comments")
+
 public class PostCommentController {
     private final PostCommentService commentService;
     @GetMapping()
@@ -28,6 +28,12 @@ public class PostCommentController {
     {
         return commentService.getCommentById(commentId);
     }
+
+    public PostCommentController(PostCommentService commentService) {
+        this.commentService = commentService;
+    }
+    @PutMapping
+
 }
 
 
