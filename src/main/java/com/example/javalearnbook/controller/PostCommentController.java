@@ -1,5 +1,6 @@
 package com.example.javalearnbook.controller;
 import com.example.javalearnbook.dto.requests.CommentsRequests;
+import com.example.javalearnbook.model.Post;
 import com.example.javalearnbook.model.PostComment;
 import com.example.javalearnbook.service.PostCommentService;
 import lombok.AllArgsConstructor;
@@ -24,16 +25,34 @@ public class PostCommentController {
         return commentService.createComment(blogPostComment);
     }
     @GetMapping("/{commentId}")
-    public PostComment getCommendById(@PathVariable Long commentId)
+    private PostComment getCommendById(@PathVariable Long commentId)
     {
         return commentService.getCommentById(commentId);
     }
 
-    public PostCommentController(PostCommentService commentService) {
+
+    @PutMapping("/{commentId}")
+    private PostComment changeCommentById(@PathVariable Long commentId,@RequestBody CommentsRequests commentsRequests)
+    {
+        return commentService.changeCommentById(commentId,commentsRequests);
+    }
+
+    @DeleteMapping("/{commentId}")
+    private String deleteComment(@PathVariable Long commentId)
+    {
+        return commentService.deleteComment(commentId);
+    }
+
+
+
+
+
+
+
+
+    private PostCommentController(PostCommentService commentService) {
         this.commentService = commentService;
     }
-    @PutMapping
-
 }
 
 

@@ -8,6 +8,7 @@ import com.example.javalearnbook.repository.CommentRepository;
 
 import org.springframework.stereotype.Service;
 
+import javax.xml.stream.events.Comment;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -64,5 +65,27 @@ public class PostCommentService {
 
     public PostComment getCommentById(Long commentId) {
         return commentRepository.findById(commentId).orElse(null);
+    }
+
+
+
+    public PostComment changeCommentById(Long commentId, CommentsRequests commentsRequests) {
+        PostComment postComment = commentRepository.findById(commentId).orElse(null);
+        if(postComment!=null)
+        {
+            postComment.setComment(commentsRequests.getComment());
+            return commentRepository.save(postComment);
+        }
+        return null;
+    }
+
+    public String deleteComment(Long commentId) {
+        Optional<PostComment> comment= commentRepository.findById(commentId);
+        if(comment.isPresent())
+        {
+            commentRepository.deleteById(commentId);
+            return "Deleted";
+        }
+        return "Couldn't delete";
     }
 }
