@@ -1,5 +1,7 @@
 package com.example.javalearnbook.service;
 
+import com.example.javalearnbook.dto.requests.PostCreateRequest;
+import com.example.javalearnbook.dto.responses.PostResponse;
 import com.example.javalearnbook.model.Post;
 import com.example.javalearnbook.model.Writer;
 import com.example.javalearnbook.repository.PostRepository;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -14,13 +17,11 @@ public class PostService {
     private final PostRepository postRepository;
     private final WriterService writerService;
 
-    public List<Post> getWritersPosts(Optional<Long> writerId)
+    public List<PostResponse> getWritersPosts(Optional<Long> writerId)
     {
-        if(writerId.isPresent())
-        {
-            return postRepository.findByWriterId(writerId.get());
-        }
-        return postRepository.findAll();
+        return writerId.map(post -> postRepository.findByWriterId(post)
+                .stream().map(PostResponse::new).collect(Collectors.toList()))
+                .orElseGet(() -> postRepository.findAll().stream().map(PostResponse::new).collect(Collectors.toList()));
     }
 
 
@@ -28,8 +29,8 @@ public class PostService {
         return postRepository.findById(postId).orElse(null);
     }
 
-    public Post createPost(Long writerId, Post post) {
-       Writer writer = writerService.getWriterById(writerId);
+    public Post createPost( PostCreateRequest post) {
+       Writer writer = writerService.getWriterById(post.getWriterId());
        if(writer !=null)
        {
             Post toSave = new Post();
@@ -41,6 +42,7 @@ public class PostService {
        }
         return null;
     }
+
 
     public Post changePostInfo(Long postId, Post changedPost) {
 

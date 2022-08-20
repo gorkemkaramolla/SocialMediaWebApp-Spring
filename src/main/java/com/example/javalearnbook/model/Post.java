@@ -23,10 +23,9 @@ public class Post {
     private String content;
 
     private String title;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name= "writer_id",nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private Writer writer;
 
 

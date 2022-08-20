@@ -1,6 +1,8 @@
 package com.example.javalearnbook.controller;
 
 import com.example.javalearnbook.dto.PostDto;
+import com.example.javalearnbook.dto.requests.PostCreateRequest;
+import com.example.javalearnbook.dto.responses.PostResponse;
 import com.example.javalearnbook.model.Post;
 
 import com.example.javalearnbook.service.PostService;
@@ -26,10 +28,10 @@ public class PostController {
     }
 
     @GetMapping
-    private List<PostDto> getAllPosts(@RequestParam Optional<Long> writerId)
+    private List<PostResponse> getAllPosts(@RequestParam Optional<Long> writerId)
     {
 
-        return convertToDtoList(postService.getWritersPosts(writerId));
+        return postService.getWritersPosts(writerId);
     }
     @GetMapping("/{postId}")
     private PostDto getPostById(@PathVariable Long postId)
@@ -37,11 +39,10 @@ public class PostController {
         return  convertToDto(postService.getPostById(postId));
     }
     @PostMapping
-    private PostDto createPost(@RequestBody PostDto postDto)
+    private Post createPost(@RequestBody PostCreateRequest postCreateRequest)
     {
-        Post post = convertToEntity(postDto);
-        Post responsePost = postService.createPost(postDto.getWriterId(), post);
-        return convertToDto(responsePost);
+
+        return postService.createPost( postCreateRequest);
 
     }
     @PutMapping("{postId}")
