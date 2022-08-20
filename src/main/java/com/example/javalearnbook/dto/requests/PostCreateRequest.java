@@ -1,12 +1,14 @@
 package com.example.javalearnbook.dto.requests;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class PostCreateRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

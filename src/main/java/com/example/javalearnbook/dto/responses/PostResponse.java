@@ -1,9 +1,11 @@
 package com.example.javalearnbook.dto.responses;
 
 import com.example.javalearnbook.model.Post;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class PostResponse {
     private Long id;
     private Long userId;

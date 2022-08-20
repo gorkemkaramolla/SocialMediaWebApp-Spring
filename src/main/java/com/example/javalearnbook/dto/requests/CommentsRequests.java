@@ -1,5 +1,6 @@
 package com.example.javalearnbook.dto.requests;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,7 +8,6 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @Setter
-
 public class CommentsRequests {
     private Long id ;
     private String comment;

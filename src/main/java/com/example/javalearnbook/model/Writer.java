@@ -1,5 +1,6 @@
 package com.example.javalearnbook.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 public class Writer {
     @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;

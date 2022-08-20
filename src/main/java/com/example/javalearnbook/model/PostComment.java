@@ -1,7 +1,7 @@
 package com.example.javalearnbook.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -9,8 +9,9 @@ import javax.persistence.*;
 
 @Entity()
 @Table()
-@Data()
-
+@Getter
+@Setter
+@NoArgsConstructor
 public class PostComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +29,7 @@ public class PostComment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Writer writer;
+
+
 
 }
