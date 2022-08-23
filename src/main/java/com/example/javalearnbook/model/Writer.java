@@ -1,5 +1,6 @@
 package com.example.javalearnbook.model;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,9 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "writerId")
 public class Writer {
     @Id
 
@@ -30,6 +33,7 @@ public class Writer {
     private String email;
     private String password;
     @OneToMany(mappedBy = "writer")
+
     private Set<Post> posts = new HashSet<>();
 
     @OneToMany(mappedBy = "writer")
