@@ -20,7 +20,7 @@ import java.util.Set;
 @Setter
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "writerId")
+        property = "id")
 public class Writer {
     @Id
 
