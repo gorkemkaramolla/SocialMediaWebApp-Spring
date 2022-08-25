@@ -32,7 +32,7 @@ public class Post {
     private Writer writer;
 
 
-    @OneToMany(mappedBy = "post",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "post",fetch = FetchType.LAZY)
     Set<PostComment> list = new HashSet<>();
 
 
