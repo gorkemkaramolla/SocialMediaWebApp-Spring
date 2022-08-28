@@ -39,6 +39,8 @@ public class Writer {
     @OneToMany(mappedBy = "writer")
     private Set<PostComment> comments = new HashSet<>();
 
+    @OneToMany(mappedBy = "writer")
+    private Set<Like> likes = new HashSet<>();
 
 
 

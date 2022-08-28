@@ -33,7 +33,10 @@ public class Post {
 
 
     @OneToMany(mappedBy = "post",fetch = FetchType.LAZY)
-    Set<PostComment> list = new HashSet<>();
+    private Set<PostComment> comments = new HashSet<>();
+
+    @OneToMany(mappedBy = "post",fetch = FetchType.EAGER)
+    private Set<Like> likes = new HashSet<>();
 
 
 
