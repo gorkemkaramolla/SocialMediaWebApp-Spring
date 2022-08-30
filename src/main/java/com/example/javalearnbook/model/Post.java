@@ -36,7 +36,7 @@ public class Post {
     private Set<PostComment> comments = new HashSet<>();
 
     @OneToMany(mappedBy = "post",fetch = FetchType.EAGER)
-    private Set<Like> likes = new HashSet<>();
+    private Set<PostLike> likes = new HashSet<>();
 
 
 

@@ -35,8 +35,7 @@ public class PostComment {
     @JsonIgnore
     private Writer writer;
 
-    @OneToMany(mappedBy = "comment",fetch = FetchType.EAGER)
-    private Set<Like> likes = new HashSet<>();
+
 
 
 }
