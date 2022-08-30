@@ -40,7 +40,7 @@ public class PostController {
         return  convertToDto(postService.getPostById(postId));
     }
     @PostMapping
-    private Post createPost(@RequestBody PostCreateRequest postCreateRequest)
+    private PostResponse createPost(@RequestBody PostCreateRequest postCreateRequest)
     {
 
         return postService.createPost( postCreateRequest);
