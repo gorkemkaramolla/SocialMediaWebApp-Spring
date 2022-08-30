@@ -14,9 +14,14 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
 
+
     private final PostRepository postRepository;
     private final WriterService writerService;
 
+    public PostService(PostRepository repository, WriterService writerService) {
+        this.postRepository = repository;
+        this.writerService = writerService;
+    }
     public List<PostResponse> getWritersPosts(Optional<Long> writerId)
     {
         return writerId.map(post -> postRepository.findByWriterId(post)
@@ -29,7 +34,7 @@ public class PostService {
         return postRepository.findById(postId).orElse(null);
     }
 
-    public Post createPost( PostCreateRequest post) {
+    public PostResponse createPost( PostCreateRequest post) {
        Writer writer = writerService.getWriterById(post.getWriterId());
        if(writer !=null)
        {
@@ -38,7 +43,8 @@ public class PostService {
             toSave.setContent(post.getContent());
             toSave.setTitle(post.getTitle());
             toSave.setWriter(writer);
-            return postRepository.save(toSave);
+            postRepository.save(toSave);
+           return new PostResponse(toSave);
        }
         return null;
     }
@@ -70,10 +76,7 @@ public class PostService {
     }
 
 
-    public PostService(PostRepository repository, WriterService writerService) {
-        this.postRepository = repository;
-        this.writerService = writerService;
-    }
+
 }
 
 

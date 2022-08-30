@@ -1,7 +1,6 @@
 package com.example.javalearnbook.model;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,7 +39,7 @@ public class Writer {
     private Set<PostComment> comments = new HashSet<>();
 
     @OneToMany(mappedBy = "writer")
-    private Set<Like> likes = new HashSet<>();
+    private Set<PostLike> likes = new HashSet<>();
 
 
 
