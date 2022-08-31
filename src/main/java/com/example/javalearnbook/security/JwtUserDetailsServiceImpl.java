@@ -8,23 +8,23 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JwtUserDetailServiceImpl implements UserDetailsService {
+public class JwtUserDetailsServiceImpl implements UserDetailsService {
     private final WriterRepository writerRepository;
 
-    public JwtUserDetailServiceImpl(WriterRepository writerRepository) {
+    public JwtUserDetailsServiceImpl(WriterRepository writerRepository) {
         this.writerRepository = writerRepository;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String eMail) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Writer writer = writerRepository.findByEmail(eMail);
+        Writer writer = writerRepository.findByEmail(email);
         return JwtUserDetails.create(writer);
 
     }
-    public UserDetails loadUserByUserId(Long id) {
+    public UserDetails loadWriterById(Long id) {
 
-        Writer writer = writerRepository.finByUserId(id);
+        Writer writer = writerRepository.findById(id).get();
         return JwtUserDetails.create(writer);
 
     }
