@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WriterRepository extends JpaRepository<Writer,Long> {
-    Writer findByEmail(String eMail);
+    Writer findByEmail(String email);
 
-    Writer finByUserId(Long id);
+
+
 }
