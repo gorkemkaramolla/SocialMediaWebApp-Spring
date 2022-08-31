@@ -16,14 +16,14 @@ import java.util.List;
 public class JwtUserDetails  implements UserDetails {
 
     private Long id;
-    private String username;
+    private String email;
     private String password;
     private Collection<?extends GrantedAuthority > authorities;
 
 
-    private JwtUserDetails(Long id,String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    private JwtUserDetails(Long id,String email, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.username = username;
+        this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
@@ -35,22 +35,26 @@ public class JwtUserDetails  implements UserDetails {
     }
 
     @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
-
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
