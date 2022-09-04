@@ -1,6 +1,7 @@
 package com.example.javalearnbook.controller.security;
 
 import com.example.javalearnbook.dto.requests.WriterRequest;
+import com.example.javalearnbook.dto.responses.security.AuthResponse;
 import com.example.javalearnbook.model.Writer;
 import com.example.javalearnbook.security.JwtTokenGenerator;
 import com.example.javalearnbook.service.WriterService;
@@ -35,29 +36,35 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody WriterRequest loginRequest)
+    public AuthResponse login(@RequestBody WriterRequest loginRequest)
     {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String JWT = tokenGenerator.generateJWT(authentication);
-
-        return "Bearer "+JWT;
+        Writer writer = writerService.getWriterByEmail(loginRequest.getEmail());
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setMessage("Bearer "+JWT);
+        authResponse.setId(writer.getId());
+        return authResponse ;
 
     }
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody Writer registerRequest)
+    public ResponseEntity<AuthResponse> register(@RequestBody Writer registerRequest)
     {
-        if(writerService.getWriterByEmail(registerRequest.getEmail()))
+        AuthResponse authResponse =new AuthResponse();
+        authResponse.setMessage("Your email is already taken");
+        if(writerService.getWriterByEmail(registerRequest.getEmail()) !=null)
         {
-            return new ResponseEntity<>("Your email is already taken",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(authResponse,HttpStatus.BAD_REQUEST);
         }
         Writer writer = new Writer();
         writer.setEmail(registerRequest.getEmail());
         writer.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         writerService.saveWriter(writer);
-        return new ResponseEntity<>("Successfully Registered",HttpStatus.CREATED);
+        authResponse.setMessage("Successfully Registered");
+        return new ResponseEntity<>(authResponse,HttpStatus.CREATED);
     }
 
 }
