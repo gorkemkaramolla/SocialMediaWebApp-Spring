@@ -25,7 +25,7 @@ public class PostLike {
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer_id",nullable = false)
+    @JoinColumn(name = "writer_id",nullable = false, unique = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Writer writer;
