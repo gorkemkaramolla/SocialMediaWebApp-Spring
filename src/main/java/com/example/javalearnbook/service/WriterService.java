@@ -59,13 +59,13 @@ public class WriterService {
         this.writerRepository = writerRepository;
     }
 
-    public boolean getWriterByEmail(String email) {
+    public Writer getWriterByEmail(String email) {
         Writer writer = writerRepository.findByEmail(email);
         if(writer!=null)
         {
-            return true;
+            return writer;
         }
-        return false;
+        return null;
     }
 }
 
