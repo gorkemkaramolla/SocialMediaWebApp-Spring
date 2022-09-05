@@ -59,6 +59,10 @@ public class AuthController {
         {
             return new ResponseEntity<>(authResponse,HttpStatus.BAD_REQUEST);
         }
+        else if()
+        {
+
+        }
         Writer writer = new Writer();
         writer.setEmail(registerRequest.getEmail());
         writer.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
@@ -66,5 +70,30 @@ public class AuthController {
         authResponse.setMessage("Successfully Registered");
         return new ResponseEntity<>(authResponse,HttpStatus.CREATED);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
