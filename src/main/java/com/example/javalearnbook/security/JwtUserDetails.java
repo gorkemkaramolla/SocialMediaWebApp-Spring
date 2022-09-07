@@ -16,6 +16,7 @@ import java.util.List;
 public class JwtUserDetails  implements UserDetails {
 
     private Long id;
+
     private String email;
     private String password;
     private Collection<?extends GrantedAuthority > authorities;
