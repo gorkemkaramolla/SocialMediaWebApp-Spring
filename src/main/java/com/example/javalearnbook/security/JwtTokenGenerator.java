@@ -1,10 +1,14 @@
 package com.example.javalearnbook.security;
 
+import com.example.javalearnbook.dto.responses.security.AuthResponse;
 import io.jsonwebtoken.*;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
 import java.util.Date;
 
 @Component
@@ -14,15 +18,20 @@ public class JwtTokenGenerator {
     @Value("${chatapp.expiration.in}")
     private Long EXPIRES_IN;
 
+    @Value("${chatapp.application.cookiename}")
+    private String jwtCookieName;
     public String generateJWT(Authentication auth)
     {
         JwtUserDetails userDetails = (JwtUserDetails) auth.getPrincipal();
         Date now = new Date(System.currentTimeMillis());
         Date expirationDate = new Date(now.getTime() + EXPIRES_IN);
-        return Jwts.builder()
+        String jwt =  Jwts.builder()
                 .setSubject(userDetails.getId().toString())
                 .setIssuedAt(now).setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS512,APP_SECRET).compact();
+
+
+        return jwt;
     }
     public Long getWriterIdFromJWT(String token)
     {
