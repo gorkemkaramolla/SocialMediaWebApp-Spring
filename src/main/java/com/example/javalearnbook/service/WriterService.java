@@ -70,8 +70,7 @@ public class WriterService {
     }
 
     public Writer getWriterByEmail(String email) {
-        Writer writer = writerRepository.findByEmail(email);
-        return writer;
+        return writerRepository.findByEmail(email);
     }
 
     public ResponseEntity<AuthResponse> validateCredentials(WriterRequest registerRequest) {
