@@ -8,13 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class CookieUtil {
 
-    public static void create(HttpServletResponse httpServletResponse, String name, String value, Boolean secure, Integer maxAge, String domain){
+    public static void create(HttpServletResponse httpServletResponse, String name, String value, Boolean secure, Integer maxAge, String domain,String comment){
         Cookie cookie = new Cookie(name, value);
         cookie.setSecure(secure);
         cookie.setHttpOnly(true);
         cookie.setMaxAge(maxAge);
         cookie.setDomain(domain);
         cookie.setPath("/");
+        cookie.setComment(comment);
         httpServletResponse.addCookie(cookie);
     }
     public static void clear(HttpServletResponse httpServletResponse, String name){
