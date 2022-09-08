@@ -1,14 +1,13 @@
 package com.example.javalearnbook.security;
 
-import com.example.javalearnbook.dto.responses.security.AuthResponse;
 import io.jsonwebtoken.*;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.Cookie;
 import java.util.Date;
 
 @Component
@@ -17,12 +16,21 @@ public class JwtTokenGenerator {
     private String APP_SECRET;
     @Value("${chatapp.expiration.in}")
     private Long EXPIRES_IN;
+    private final AuthenticationManager authenticationManager;
 
     @Value("${chatapp.application.cookiename}")
     private String jwtCookieName;
-    public String generateJWT(Authentication auth)
+
+    public JwtTokenGenerator(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+
+    public String generateJWT(Authentication authentication)
     {
-        JwtUserDetails userDetails = (JwtUserDetails) auth.getPrincipal();
+
+
+
+        JwtUserDetails userDetails = (JwtUserDetails) authentication.getPrincipal();
         Date now = new Date(System.currentTimeMillis());
         Date expirationDate = new Date(now.getTime() + EXPIRES_IN);
         String jwt =  Jwts.builder()
@@ -61,4 +69,15 @@ public class JwtTokenGenerator {
                 .parseClaimsJws(token).getBody();
     }
 
+    public String generateJwtByWriterId(Long writerId) {
+        Date now = new Date(System.currentTimeMillis());
+        Date expirationDate = new Date(now.getTime() + EXPIRES_IN);
+        String jwt =  Jwts.builder()
+                .setSubject(writerId.toString())
+                .setIssuedAt(now).setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS512,APP_SECRET).compact();
+
+
+        return jwt;
+    }
 }
