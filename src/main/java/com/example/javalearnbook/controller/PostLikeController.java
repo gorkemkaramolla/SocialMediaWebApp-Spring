@@ -13,6 +13,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/postlikes")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class PostLikeController {
     private final PostLikeService postLikeService;
     public PostLikeController(PostLikeService postLikeService) {
