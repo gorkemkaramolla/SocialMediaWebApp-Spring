@@ -4,7 +4,6 @@ import com.example.javalearnbook.model.Post;
 import com.example.javalearnbook.model.PostLike;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
