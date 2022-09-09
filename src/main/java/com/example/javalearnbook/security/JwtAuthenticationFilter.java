@@ -1,6 +1,7 @@
 package com.example.javalearnbook.security;
 
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,13 +18,11 @@ import java.io.IOException;
 @NoArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    public JwtAuthenticationFilter(JwtTokenGenerator tokenGenerator, JwtUserDetailsServiceImpl userDetailsService) {
-        this.tokenGenerator = tokenGenerator;
-        this.userDetailsService = userDetailsService;
 
-    }
 
+    @Autowired
     private JwtTokenGenerator tokenGenerator;
+    @Autowired
     private  JwtUserDetailsServiceImpl userDetailsService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
