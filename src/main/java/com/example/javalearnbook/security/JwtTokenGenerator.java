@@ -28,8 +28,6 @@ public class JwtTokenGenerator {
     public String generateJWT(Authentication authentication)
     {
 
-
-
         JwtUserDetails userDetails = (JwtUserDetails) authentication.getPrincipal();
         Date now = new Date(System.currentTimeMillis());
         Date expirationDate = new Date(now.getTime() + EXPIRES_IN);
@@ -39,7 +37,7 @@ public class JwtTokenGenerator {
                 .signWith(SignatureAlgorithm.HS512,APP_SECRET).compact();
 
 
-        return jwt;
+        return "Bearer " +jwt;
     }
     public Long getWriterIdFromJWT(String token)
     {
@@ -58,9 +56,8 @@ public class JwtTokenGenerator {
         }
     }
     private boolean isTokenExpired(String token) {
-        Claims claims = parseGetBody(token);
-        Date dateCreated = claims.getIssuedAt();
-        return !dateCreated.before(claims.getExpiration());
+        Date expiration = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token).getBody().getExpiration();
+        return expiration.before(new Date());
 
     }
     private Claims parseGetBody(String token)
@@ -78,6 +75,6 @@ public class JwtTokenGenerator {
                 .signWith(SignatureAlgorithm.HS512,APP_SECRET).compact();
 
 
-        return jwt;
+        return "Bearer " +jwt;
     }
 }
