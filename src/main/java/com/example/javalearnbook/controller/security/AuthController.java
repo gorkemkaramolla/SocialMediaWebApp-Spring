@@ -15,15 +15,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenGenerator tokenGenerator;
@@ -48,7 +50,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String JWT = tokenGenerator.generateJWT(authentication);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(loginRequest);
-        CookieUtil.create(httpServletResponse, "session", refreshToken.getRefreshToken(), false, 60, "localhost",writer.getId().toString());
+        CookieUtil.create(httpServletResponse, "session", refreshToken.getRefreshToken(), false, 500, "localhost",writer.getId().toString());
         AuthResponse authResponse = new AuthResponse();
         authResponse.setJWT(JWT);
         authResponse.setRefreshToken(refreshToken.getRefreshToken());
@@ -62,12 +64,20 @@ public class AuthController {
         return writerService.validateCredentials(registerRequest);
     }
     @PostMapping("/refresh")
-    public  ResponseEntity<Object> refreshToken(HttpServletResponse httpServletResponse,@RequestBody RefreshRequest refreshRequest)
+    public  ResponseEntity<Object> refreshToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody RefreshRequest refreshRequest)
     {
         String JWT =refreshTokenService.refreshTokenRequestHandler(refreshRequest);
         CookieUtil.create(httpServletResponse, "session", JWT, false, 60, "localhost",refreshRequest.getWriterId().toString());
         AuthResponse authResponse = new AuthResponse();
         authResponse.setJWT(JWT);
+
+        Cookie[] cookies = httpServletRequest.getCookies();
+        if(cookies!=null)
+        {
+            for (Cookie cookie:cookies) {
+                System.out.println(cookie.getName());
+            }
+        }
         try {
             return new ResponseEntity<>(authResponse,HttpStatus.OK);
         }
