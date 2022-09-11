@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuthResponse {
-    private Long id;
+    private Long writerId;
     private String message;
-    private String JWT;
-    private String refreshToken;
+    private String accessToken;
+
 }
