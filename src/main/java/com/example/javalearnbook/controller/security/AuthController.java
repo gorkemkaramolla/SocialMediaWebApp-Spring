@@ -21,6 +21,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -50,10 +51,12 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String JWT = tokenGenerator.generateJWT(authentication);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(loginRequest);
-        CookieUtil.create(httpServletResponse, "session", refreshToken.getRefreshToken(), false, 500, "localhost",writer.getId().toString());
+        CookieUtil.create(httpServletResponse, "session", writer.getId()+"/"+refreshToken.getRefreshToken(), false, 500, "localhost");
         AuthResponse authResponse = new AuthResponse();
-        authResponse.setJWT(JWT);
-        authResponse.setRefreshToken(refreshToken.getRefreshToken());
+        authResponse.setAccessToken(JWT);
+        authResponse.setWriterId(writer.getId());
+
+        authResponse.setMessage("Successfully Logged in");
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
 
 
@@ -64,27 +67,33 @@ public class AuthController {
         return writerService.validateCredentials(registerRequest);
     }
     @PostMapping("/refresh")
-    public  ResponseEntity<Object> refreshToken(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody RefreshRequest refreshRequest)
+    public  ResponseEntity<Object> refreshToken(HttpServletRequest httpServletRequest)
     {
-        String JWT =refreshTokenService.refreshTokenRequestHandler(refreshRequest);
-        CookieUtil.create(httpServletResponse, "session", JWT, false, 60, "localhost",refreshRequest.getWriterId().toString());
-        AuthResponse authResponse = new AuthResponse();
-        authResponse.setJWT(JWT);
+        List<Cookie> cookies = Arrays.stream(httpServletRequest.getCookies()).toList();
 
-        Cookie[] cookies = httpServletRequest.getCookies();
-        if(cookies!=null)
+
+        Cookie session = cookies.stream().filter(cookie -> cookie.getName().equals("session")).findAny().orElse(null);
+        if(session!=null)
         {
-            for (Cookie cookie:cookies) {
-                System.out.println(cookie.getName());
-            }
+            RefreshRequest refreshRequest = new RefreshRequest();
+            refreshRequest.setRefreshToken(session.getValue().split("/")[1]);
+            Long writerID = Long.parseLong(session.getValue().split("/")[0]);
+            refreshRequest.setWriterId(writerID);
+            String JWT =refreshTokenService.refreshTokenRequestHandler(refreshRequest);
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setMessage("Access Token Refreshed JWT");
+            authResponse.setAccessToken(JWT);
+            authResponse.setWriterId(writerID);
+
+                return new ResponseEntity<>(authResponse,HttpStatus.OK);
+
+
+
         }
-        try {
-            return new ResponseEntity<>(authResponse,HttpStatus.OK);
-        }
-        catch (Exception e)
-        {
-            return new ResponseEntity<>(e,HttpStatus.UNAUTHORIZED);
-        }
+        return new ResponseEntity<>("ERROR",HttpStatus.UNAUTHORIZED);
+
+
+
     }
 
 
