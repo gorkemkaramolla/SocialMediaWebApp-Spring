@@ -2,6 +2,7 @@ package com.example.javalearnbook.controller;
 
 import com.example.javalearnbook.dto.WriterDto;
 
+import com.example.javalearnbook.dto.responses.WriterResponse;
 import com.example.javalearnbook.model.Writer;
 import com.example.javalearnbook.service.WriterService;
 import org.modelmapper.ModelMapper;
@@ -26,10 +27,14 @@ public class WriterController {
 
     }
     @GetMapping("/{userId}")
-    public WriterDto getOneWriter(@PathVariable Long userId)
+    public WriterResponse getOneWriter(@PathVariable Long userId)
     {
         Writer singleWriter= writerService.getWriterById(userId);
-        return convertToDto(singleWriter);
+        WriterResponse writerResponse = new WriterResponse();
+        writerResponse.setEmail(singleWriter.getEmail());
+        writerResponse.setUserName(singleWriter.getUserName());
+        writerResponse.setBio(singleWriter.getBio());
+        return writerResponse;
     }
     @PostMapping
     public Writer saveWriter(@RequestBody WriterDto writerDto)
