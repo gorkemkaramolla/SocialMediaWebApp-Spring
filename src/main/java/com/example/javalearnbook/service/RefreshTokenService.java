@@ -57,24 +57,15 @@ public class RefreshTokenService {
        RefreshToken dbRefreshToken =  refreshTokenRepository.findByWriterId(refreshRequest.getWriterId());
        String requestRefreshToken = refreshRequest.getRefreshToken();
        Writer writer = writerService.getWriterById(refreshRequest.getWriterId());
-        if(dbRefreshToken.getRefreshToken().equals(requestRefreshToken) )
-        {
-            if(isExpired(dbRefreshToken))
-            {
-                if(writer!=null)
-                {
 
-                    return tokenGenerator.generateJwtByWriterId(writer.getId());
-
-
-
-                }
-            }
-            else {
-                return null;
-            }
-        }
-        return null;
+       if(dbRefreshToken.getRefreshToken().equals(requestRefreshToken))
+       {
+           if(!isExpired(dbRefreshToken))
+           {
+                return tokenGenerator.generateJwtByWriterId(refreshRequest.getWriterId());
+           }
+       }
+        return "your token not expired";
     }
     public boolean isExpired(RefreshToken refreshToken)
     {
