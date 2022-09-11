@@ -13,8 +13,7 @@ import java.util.stream.Collectors;
 public class PostResponse {
     private Long id;
     private Long userId;
-    private String name;
-    private String lastName;
+    private String userName;
     private String title;
     private String content;
     private Set<PostLikeResponse> postLikes;
@@ -22,8 +21,7 @@ public class PostResponse {
     public PostResponse(Post entity) {
         this.id = entity.getId();
         this.userId = entity.getWriter().getId();
-        this.name = entity.getWriter().getName();
-        this.lastName = entity.getWriter().getLastName();
+        this.userName = entity.getWriter().getUserName();
         this.title = entity.getTitle();
         this.content = entity.getContent();
 

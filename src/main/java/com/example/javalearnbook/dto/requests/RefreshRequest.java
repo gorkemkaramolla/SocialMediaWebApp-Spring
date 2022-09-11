@@ -1,6 +1,7 @@
 package com.example.javalearnbook.dto.requests;
 
 import com.example.javalearnbook.model.RefreshToken;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
