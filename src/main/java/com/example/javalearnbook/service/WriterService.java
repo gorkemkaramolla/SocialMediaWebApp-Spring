@@ -40,8 +40,7 @@ public class WriterService {
        if(blogWriter.isPresent())
        {
            Writer foundWriter = blogWriter.get();
-           foundWriter.setName(changeRequestedWriter.getName());
-           foundWriter.setLastName(changeRequestedWriter.getLastName());
+           foundWriter.setUserName(changeRequestedWriter.getUserName());
 
             return writerRepository.save(foundWriter);
        }
