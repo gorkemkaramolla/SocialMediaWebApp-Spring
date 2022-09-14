@@ -55,6 +55,7 @@ public class AuthController {
         AuthResponse authResponse = new AuthResponse();
         authResponse.setAccessToken(JWT);
         authResponse.setWriterId(writer.getId());
+        authResponse.setUserName(writer.getUserName());
 
         authResponse.setMessage("Successfully Logged in");
         return new ResponseEntity<>(authResponse, HttpStatus.OK);

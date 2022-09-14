@@ -10,5 +10,5 @@ public class AuthResponse {
     private Long writerId;
     private String message;
     private String accessToken;
-
+    private String userName;
 }
