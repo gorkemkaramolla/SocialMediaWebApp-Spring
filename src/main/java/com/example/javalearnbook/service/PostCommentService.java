@@ -1,6 +1,7 @@
 package com.example.javalearnbook.service;
 
 import com.example.javalearnbook.dto.requests.CommentsRequests;
+import com.example.javalearnbook.dto.responses.PostCommentResponse;
 import com.example.javalearnbook.model.Post;
 import com.example.javalearnbook.model.PostComment;
 import com.example.javalearnbook.model.Writer;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import javax.xml.stream.events.Comment;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 
 public class PostCommentService {
@@ -24,23 +27,30 @@ public class PostCommentService {
     private final CommentRepository commentRepository;
     private final WriterService writerService;
     private final PostService postService;
-    public List<PostComment> getComments(Optional<Long> writerId, Optional<Long> postId) {
+    public List<PostCommentResponse> getComments(Optional<Long> writerId, Optional<Long> postId) {
         //post first writer second
         if(postId.isPresent() && writerId.isPresent())
         {
-            return commentRepository.findByWriterIdAndPostId(writerId.get(),postId.get());
+            List<PostComment> comments =commentRepository.findByWriterIdAndPostId(writerId.get(),postId.get());
+            return comments.stream().map(PostCommentResponse::new).collect(Collectors.toList());
+
         }
         else if(postId.isPresent())
         {
-            return postId.map(commentRepository::findByPostId).orElse(null).stream().toList();
+
+            List<PostComment> comments = postId.map(commentRepository::findByPostId).orElse(null).stream().toList();
+            return comments.stream().map(PostCommentResponse::new).collect(Collectors.toList());
 
         }
         else if(writerId.isPresent()){
-            return writerId.map(commentRepository::findByWriterId).orElse(null).stream().toList();
+            List<PostComment> comments= writerId.map(commentRepository::findByWriterId).orElse(null).stream().toList();
+            return comments.stream().map(PostCommentResponse::new).collect(Collectors.toList());
 
         }
         else {
-            return commentRepository.findAll();
+            List<PostComment> comments=  commentRepository.findAll();
+            return comments.stream().map(PostCommentResponse::new).collect(Collectors.toList());
+
         }
 
 

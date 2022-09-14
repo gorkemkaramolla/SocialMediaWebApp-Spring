@@ -1,5 +1,6 @@
 package com.example.javalearnbook.controller;
 import com.example.javalearnbook.dto.requests.CommentsRequests;
+import com.example.javalearnbook.dto.responses.PostCommentResponse;
 import com.example.javalearnbook.model.Post;
 import com.example.javalearnbook.model.PostComment;
 import com.example.javalearnbook.service.PostCommentService;
@@ -16,7 +17,7 @@ import java.util.Optional;
 public class PostCommentController {
     private final PostCommentService commentService;
     @GetMapping()
-    private List<PostComment> getComments(@RequestParam Optional<Long> postId, @RequestParam Optional<Long> writerId)
+    private List<PostCommentResponse> getComments(@RequestParam Optional<Long> postId, @RequestParam Optional<Long> writerId)
     {
         return commentService.getComments(writerId,postId);
     }
