@@ -2,7 +2,9 @@ package com.example.javalearnbook.controller;
 
 import com.example.javalearnbook.dto.WriterDto;
 
+import com.example.javalearnbook.dto.requests.WriterRequest;
 import com.example.javalearnbook.dto.responses.WriterResponse;
+import com.example.javalearnbook.model.UserNameRequest;
 import com.example.javalearnbook.model.Writer;
 import com.example.javalearnbook.service.WriterService;
 import org.modelmapper.ModelMapper;
@@ -40,6 +42,11 @@ public class WriterController {
     public Writer saveWriter(@RequestBody WriterDto writerDto)
     {
         return writerService.saveWriter(convertToEntity(writerDto));
+    }
+    @PutMapping("/username/{writerId}")
+    public String pickUserName(@PathVariable String writerId,@RequestBody UserNameRequest writerRequest)
+    {
+        return writerService.updateUserName(Long.parseLong(writerId),writerRequest);
     }
     @PutMapping("/{writerId}")
     public WriterDto updateUser(@PathVariable Long writerId,@RequestBody WriterDto writerDto)
