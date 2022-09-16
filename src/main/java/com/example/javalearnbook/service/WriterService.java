@@ -1,7 +1,9 @@
 package com.example.javalearnbook.service;
 
 import com.example.javalearnbook.dto.requests.WriterRequest;
+import com.example.javalearnbook.dto.responses.WriterResponse;
 import com.example.javalearnbook.dto.responses.security.AuthResponse;
+import com.example.javalearnbook.model.UserNameRequest;
 import com.example.javalearnbook.model.Writer;
 
 import com.example.javalearnbook.repository.WriterRepository;
@@ -100,6 +102,20 @@ public class WriterService {
             authResponse.setMessage("Successfully Registered");
             return new ResponseEntity<>(authResponse,HttpStatus.CREATED);
 
+    }
+
+    public String updateUserName(Long id, UserNameRequest userNameRequest) {
+        Writer writer = writerRepository.findById(id).orElse(null);
+        WriterResponse  writerResponse= new WriterResponse();
+        if( writer != null)
+        {
+            writer.setUserName(userNameRequest.getUserName());
+            writerRepository.save(writer);
+            return userNameRequest.getUserName();
+
+
+        }
+        return "error";
     }
 }
 
