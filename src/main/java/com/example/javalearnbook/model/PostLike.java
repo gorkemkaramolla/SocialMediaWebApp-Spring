@@ -17,7 +17,6 @@ public class PostLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id",nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -25,7 +24,8 @@ public class PostLike {
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer_id",nullable = false, unique = true)
+    @JoinColumn(name = "writer_id",nullable = false)
+
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Writer writer;
