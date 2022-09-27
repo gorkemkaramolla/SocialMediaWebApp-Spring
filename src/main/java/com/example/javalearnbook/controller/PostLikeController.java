@@ -29,11 +29,11 @@ public class PostLikeController {
     @PostMapping
     public PostLike savePostLikes(@RequestBody PostLikePostRequest postLikePostRequest)
     {
-        return postLikeService.savePost(postLikePostRequest);
+        return postLikeService.savePostLikes(postLikePostRequest);
     }
     @DeleteMapping("/{likeId}")
-    public String deleteLike(@PathVariable Long likeId)
+    public String deleteLike(@RequestBody PostLikePostRequest postLikePostRequest)
     {
-        return postLikeService.deleteLike(likeId);
+        return postLikeService.deleteLike(postLikePostRequest);
     }
 }
