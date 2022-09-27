@@ -25,13 +25,18 @@ public class Writer {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 16)
     private String userName;
+    @Column(length = 400)
     private String bio;
-    @Column(unique = true)
+    @Column(unique = true,length =70)
     private String email;
+    @Column(length = 64)
     private String password;
-    @OneToMany(mappedBy = "writer")
+    @Column(length = 64)
+    private String imgPath="user.png";
 
+    @OneToMany(mappedBy = "writer")
     private Set<Post> posts = new HashSet<>();
 
     @OneToMany(mappedBy = "writer")
