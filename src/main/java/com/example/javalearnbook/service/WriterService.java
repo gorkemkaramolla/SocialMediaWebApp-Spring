@@ -1,5 +1,6 @@
 package com.example.javalearnbook.service;
 
+import com.example.javalearnbook.dto.requests.ProfileImageRequest;
 import com.example.javalearnbook.dto.requests.WriterRequest;
 import com.example.javalearnbook.dto.responses.WriterResponse;
 import com.example.javalearnbook.dto.responses.security.AuthResponse;
@@ -36,20 +37,22 @@ public class WriterService {
     public Writer saveWriter(Writer writer) {
       return writerRepository.save(writer);
     }
-    public Writer updateWriter(Long userId, Writer changeRequestedWriter)
+    public WriterResponse updateWriter(Long writerId, ProfileImageRequest profileImageRequest)
     {
-       Optional<Writer> blogWriter = writerRepository.findById(userId);
-       if(blogWriter.isPresent())
+
+       Writer writer = writerRepository.findById(writerId).orElse(null);
+       if(writer!=null)
        {
-           Writer foundWriter = blogWriter.get();
-           foundWriter.setUserName(changeRequestedWriter.getUserName());
-
-            return writerRepository.save(foundWriter);
+           writer.setImgPath(profileImageRequest.getImgPath());
+           writerRepository.save(writer);
+           WriterResponse writerResponse= new WriterResponse();
+           writerResponse.setImgPath(writer.getImgPath());
+           writerResponse.setBio(writer.getBio());
+           writerResponse.setUserName(writer.getUserName());
+           writerResponse.setEmail(writer.getEmail());
+           return writerResponse;
        }
-       else {
-           return null;
-       }
-
+       return null;
     }
 
 
