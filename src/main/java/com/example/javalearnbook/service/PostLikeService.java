@@ -34,21 +34,28 @@ public class PostLikeService {
         return null;
     }
 
-    public PostLike savePost(PostLikePostRequest postLikePostRequest) {
+    public PostLike savePostLikes(PostLikePostRequest postLikePostRequest) {
 
-        Writer writer = writerService.getWriterById(postLikePostRequest.getWriterId());
+        Writer writer = writerService.getWriterById(Long.parseLong(postLikePostRequest.getWriterId()));
         Post post = postService.getPostById(postLikePostRequest.getPostId());
-        PostLike postLike = new PostLike();
-        postLike.setPost(post);
-        postLike.setWriter(writer);
-        return postLikeRepository.save(postLike);
+
+        PostLike postLike = postLikeRepository.findByWriterIdAndPostId(writer.getId(),post.getId());
+        if(postLike== null)
+        {
+            PostLike insertedPostLike = new PostLike();
+            insertedPostLike.setPost(post);
+            insertedPostLike.setWriter(writer);
+            return postLikeRepository.save(insertedPostLike);
+
+        }
+        return null;
     }
 
-    public String deleteLike(Long id) {
-        Optional<PostLike> postLike = postLikeRepository.findById(id);
-        if(postLike.isPresent())
+    public String deleteLike(PostLikePostRequest deleteRequest) {
+        PostLike postLike = postLikeRepository.findByWriterIdAndPostId(Long.parseLong(deleteRequest.getWriterId()),deleteRequest.getPostId());
+        if(postLike!=null)
         {
-            postLikeRepository.deleteById(id);
+            postLikeRepository.deleteById(postLike.getId());
             return "Like Deleted";
         }
         return  "Like is not exist";
