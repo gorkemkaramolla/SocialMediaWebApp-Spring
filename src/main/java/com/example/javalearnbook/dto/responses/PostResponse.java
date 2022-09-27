@@ -16,6 +16,7 @@ public class PostResponse {
     private String userName;
     private String title;
     private String content;
+    private String imagePath;
     private Set<PostLikeResponse> postLikes;
 
     public PostResponse(Post entity) {
@@ -24,6 +25,7 @@ public class PostResponse {
         this.userName = entity.getWriter().getUserName();
         this.title = entity.getTitle();
         this.content = entity.getContent();
+        this.imagePath=entity.getWriter().getImgPath();
 
         Set<PostLike> likes = entity.getLikes();
         this.postLikes=likes.stream().map(PostLikeResponse::new).collect(Collectors.toSet());
