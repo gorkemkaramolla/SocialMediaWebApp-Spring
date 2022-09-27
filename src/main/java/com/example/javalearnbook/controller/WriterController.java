@@ -2,6 +2,7 @@ package com.example.javalearnbook.controller;
 
 import com.example.javalearnbook.dto.WriterDto;
 
+import com.example.javalearnbook.dto.requests.ProfileImageRequest;
 import com.example.javalearnbook.dto.requests.WriterRequest;
 import com.example.javalearnbook.dto.responses.WriterResponse;
 import com.example.javalearnbook.model.UserNameRequest;
@@ -36,6 +37,7 @@ public class WriterController {
         writerResponse.setEmail(singleWriter.getEmail());
         writerResponse.setUserName(singleWriter.getUserName());
         writerResponse.setBio(singleWriter.getBio());
+        writerResponse.setImgPath(singleWriter.getImgPath());
         return writerResponse;
     }
     @PostMapping
@@ -48,13 +50,12 @@ public class WriterController {
     {
         return writerService.updateUserName(Long.parseLong(writerId),writerRequest);
     }
-    @PutMapping("/{writerId}")
-    public WriterDto updateUser(@PathVariable Long writerId,@RequestBody WriterDto writerDto)
-    {
-        Writer updatingWriter = convertToEntity(writerDto);
-        Writer updatedWriter= writerService.updateWriter(writerId,updatingWriter);
 
-        return convertToDto(updatedWriter);
+    @PutMapping("/{writerId}")
+    public WriterResponse updateUser(@PathVariable String writerId,@RequestBody ProfileImageRequest profileImageRequest)
+    {
+        System.out.println(writerId);
+        return writerService.updateWriter(Long.parseLong(writerId),profileImageRequest);
     }
     @DeleteMapping("{writerId}")
     public String deleteWriter(@PathVariable Long writerId)
