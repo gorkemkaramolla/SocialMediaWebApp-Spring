@@ -14,7 +14,7 @@ public class  PostLikePostRequest  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long writerId;
+    private String writerId;
     private Long postId;
 
 }
